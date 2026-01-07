@@ -1,0 +1,174 @@
+<div class="min-h-screen bg-gray-100 flex flex-col items-center py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Generate Your QR Code
+        </h2>
+        <p class="mt-2 text-center text-sm text-gray-600 max-w-sm mx-auto">
+            Enter a URL below to create a high-quality QR code. It's fast, secure, and ready for your business.
+        </p>
+    </div>
+
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-xl">
+        <div class="bg-white py-8 px-4 shadow-lg sm:rounded-lg sm:px-10">
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="mb-6">
+                        {% for category, message in messages %}
+                            <div class="p-3 mb-2 text-sm rounded-md {% if category == 'success' %}bg-green-100 text-green-800{% elif category == 'error' %}bg-red-100 text-red-800{% else %}bg-blue-100 text-blue-800{% endif %}" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form class="space-y-6" id="qrForm" novalidate>
+                <div>
+                    <label for="url_input" class="block text-sm font-medium text-gray-700">
+                        Target URL
+                    </label>
+                    <div class="mt-1">
+                        <input id="url_input" name="url" type="url" autocomplete="url" required
+                               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                               placeholder="e.g., https://yourwebsite.com/product">
+                        <p id="urlError" class="mt-2 text-sm text-red-600 hidden">Please enter a valid HTTP or HTTPS URL.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="format_select" class="block text-sm font-medium text-gray-700">
+                        Output Format
+                    </label>
+                    <div class="mt-1">
+                        <select id="format_select" name="format"
+                                class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                            <option value="png" selected>PNG (High Resolution)</option>
+                            <option value="svg">SVG (Vector - Recommended for Print)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" id="generateBtn"
+                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Generate QR Code
+                    </button>
+                </div>
+
+                <div id="serverError" class="mt-4 p-3 text-sm bg-red-100 text-red-800 rounded-md hidden" role="alert">
+                    <!-- Server-side error messages will be displayed here -->
+                </div>
+            </form>
+
+            <div id="loadingIndicator" class="mt-8 text-center hidden">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mx-auto"></div>
+                <p class="mt-3 text-gray-600">Generating your QR code...</p>
+            </div>
+
+            <div id="qrCodeDisplay" class="mt-8 pt-8 border-t border-gray-200 hidden">
+                <h2 class="text-center text-2xl font-bold text-gray-900 mb-6">Your Generated QR Code</h2>
+                <div class="flex flex-col items-center space-y-6">
+                    <img id="qrImage" src="" alt="Generated QR Code" class="max-w-xs sm:max-w-sm h-auto border border-gray-300 p-2 rounded-lg shadow-md">
+                    <p id="qrDetails" class="text-sm text-gray-600 text-center"></p>
+                    <a id="downloadLink" href="#" download class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                        <svg class="-ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                        Download QR Code
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const qrForm = document.getElementById('qrForm');
+        const urlInput = document.getElementById('url_input');
+        const urlError = document.getElementById('urlError');
+        const formatSelect = document.getElementById('format_select');
+        const generateBtn = document.getElementById('generateBtn');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const qrCodeDisplay = document.getElementById('qrCodeDisplay');
+        const qrImage = document.getElementById('qrImage');
+        const downloadLink = document.getElementById('downloadLink');
+        const qrDetails = document.getElementById('qrDetails');
+        const serverErrorDiv = document.getElementById('serverError');
+
+        /**
+         * Validates if a given string is a valid HTTP or HTTPS URL.
+         * @param {string} urlString - The URL string to validate.
+         * @returns {boolean} True if the URL is valid, false otherwise.
+         */
+        function isValidUrl(urlString) {
+            try {
+                const url = new URL(urlString);
+                return url.protocol === 'http:' || url.protocol === 'https:';
+            } catch (e) {
+                return false;
+            }
+        }
+
+        qrForm.addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Clear previous states
+            urlError.classList.add('hidden');
+            serverErrorDiv.classList.add('hidden');
+            qrCodeDisplay.classList.add('hidden');
+            loadingIndicator.classList.remove('hidden');
+            generateBtn.disabled = true; // Disable button during submission
+            generateBtn.textContent = 'Generating...';
+
+            const url = urlInput.value.trim();
+            const format = formatSelect.value;
+
+            // Client-side validation
+            if (!isValidUrl(url)) {
+                urlError.classList.remove('hidden');
+                loadingIndicator.classList.add('hidden');
+                generateBtn.disabled = false;
+                generateBtn.textContent = 'Generate QR Code';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/generate_qr', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // Flask-Login might handle session automatically,
+                        // but if CSRF token is needed, it would be added here.
+                        // 'X-CSRFToken': '{{ csrf_token() }}' // Example if using Flask-WTF/CSRF
+                    },
+                    body: JSON.stringify({ url: url, format: format })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    qrImage.src = data.qr_code_url;
+                    downloadLink.href = data.download_url;
+                    downloadLink.setAttribute('download', `qr_code_${Date.now()}.${format}`); // Dynamic filename
+                    qrDetails.textContent = `Target: ${url} | Format: ${format.toUpperCase()}`;
+                    qrCodeDisplay.classList.remove('hidden');
+                } else {
+                    const errorMessage = data.message || 'An unknown error occurred during QR code generation.';
+                    serverErrorDiv.textContent = errorMessage;
+                    serverErrorDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                serverErrorDiv.textContent = 'Network error or server unreachable. Please try again.';
+                serverErrorDiv.classList.remove('hidden');
+            } finally {
+                loadingIndicator.classList.add('hidden');
+                generateBtn.disabled = false;
+                generateBtn.textContent = 'Generate QR Code';
+            }
+        });
+    });
+</script>

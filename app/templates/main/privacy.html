@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Privacy Policy - QR Code Genius{% endblock %}</title>
+    <!-- Assuming base.html includes common CSS frameworks like Tailwind CSS -->
+</head>
+<body>
+    {% extends "base.html" %}
+
+    {% block content %}
+    <div class="container mx-auto px-4 py-8 max-w-3xl">
+        <h1 class="text-4xl font-bold text-gray-900 mb-6 text-center">Privacy Policy</h1>
+        <p class="text-gray-600 mb-8 text-center">Last Updated: {{ '2023-10-27' }}</p>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">1. Introduction</h2>
+            <p class="text-gray-700 leading-relaxed">
+                Welcome to <strong>QR Code Genius</strong> ("we," "our," or "us"). We operate a commercial SaaS platform that enables users to securely generate, download, manage, and optionally track QR codes for various URLs. Your privacy is of paramount importance to us, and this Privacy Policy outlines how we collect, use, disclose, and protect your information when you use our website and services.
+            </p>
+            <p class="text-gray-700 leading-relaxed mt-3">
+                By accessing or using QR Code Genius, you agree to the terms of this Privacy Policy. If you do not agree with the terms, please do not access or use our services.
+            </p>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">2. Information We Collect</h2>
+            <p class="text-gray-700 leading-relaxed">
+                We collect various types of information to provide and improve our services to you:
+            </p>
+            <ul class="list-disc list-inside text-gray-700 ml-4 mt-3 space-y-2">
+                <li>
+                    <strong>Account Information:</strong> When you register for an account, we collect your email address and a securely hashed version of your password. We also record the date and time of your registration.
+                </li>
+                <li>
+                    <strong>QR Code Data:</strong> When you generate a QR code, we collect the target URL you provide, the generated QR code image filename, and the timestamp of generation. This data is stored securely to allow you to manage and download your QR codes.
+                </li>
+                <li>
+                    <strong>Usage Data:</strong> We may collect information about how you access and use our service, such as your IP address, browser type, operating system, pages visited, and the dates/times of your visits. This data helps us understand user behavior, improve our service, and ensure security.
+                </li>
+                <li>
+                    <strong>Cookies and Tracking Technologies:</strong> We use cookies and similar tracking technologies to track activity on our service and hold certain information. Cookies are used for session management (e.g., keeping you logged in), remembering preferences, and basic analytics. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some portions of our Service.
+                </li>
+            </ul>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">3. How We Use Your Information</h2>
+            <p class="text-gray-700 leading-relaxed">
+                We use the collected data for various purposes:
+            </p>
+            <ul class="list-disc list-inside text-gray-700 ml-4 mt-3 space-y-2">
+                <li>To provide, operate, and maintain our service, including secure user authentication and QR code generation/storage.</li>
+                <li>To manage your account and provide you with access to your personalized dashboard.</li>
+                <li>To improve, personalize, and expand our service offerings.</li>
+                <li>To understand and analyze how you use our service.</li>
+                <li>To detect, prevent, and address technical issues and security incidents.</li>
+                <li>To communicate with you, including sending service updates, password reset instructions, and support messages.</li>
+                <li>To fulfill any other purpose for which you provide it.</li>
+                <li>
+                    <strong>Future Features (e.g., Analytics):</strong> If we introduce features like QR code scan analytics (tracking scan counts, geographical location, device types), we will do so in a privacy-compliant manner, often using aggregated and anonymized data, and will update this policy accordingly.
+                </li>
+            </ul>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">4. How We Share Your Information</h2>
+            <p class="text-gray-700 leading-relaxed">
+                We do not sell, rent, or trade your personal data to third parties. We may share your information in the following situations:
+            </p>
+            <ul class="list-disc list-inside text-gray-700 ml-4 mt-3 space-y-2">
+                <li>
+                    <strong>With Service Providers:</strong> We may engage third-party companies and individuals to facilitate our service (e.g., hosting providers, email delivery services). These third parties have access to your Personal Data only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose.
+                </li>
+                <li>
+                    <strong>For Legal Requirements:</strong> We may disclose your Personal Data if required to do so by law or in response to valid requests by public authorities (e.g., a court or a government agency).
+                </li>
+                <li>
+                    <strong>Business Transfers:</strong> If QR Code Genius is involved in a merger, acquisition, or asset sale, your Personal Data may be transferred. We will provide notice before your Personal Data is transferred and becomes subject to a different Privacy Policy.
+                </li>
+                <li>
+                    <strong>With Your Consent:</strong> We may disclose your personal information for any other purpose with your explicit consent.
+                </li>
+            </ul>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">5. Data Retention</h2>
+            <p class="text-gray-700 leading-relaxed">
+                We retain your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use your Personal Data to the extent necessary to comply with our legal obligations (for example, if we are required to retain your data to comply with applicable laws), resolve disputes, and enforce our legal agreements and policies.
+            </p>
+            <p class="text-gray-700 leading-relaxed mt-3">
+                Your generated QR code data will be retained as long as your account is active, allowing you to manage and download them. You have the ability to delete previously generated QR codes from your dashboard, which will remove them from our active storage.
+            </p>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">6. Data Security</h2>
+            <p class="text-gray-700 leading-relaxed">
+                The security of your data is important to us. We implement robust security measures to protect your Personal Data from unauthorized access, alteration, disclosure, or destruction. These measures include:
+            </p>
+            <ul class="list-disc list-inside text-gray-700 ml-4 mt-3 space-y-2">
+                <li><strong>HTTPS:</strong> All communications between your browser and our servers are encrypted using HTTPS.</li>
+                <li><strong>Password Hashing:</strong> User passwords are never stored in plain text; they are securely hashed using industry-standard algorithms (e.g., bcrypt).</li>
+                <li><strong>Secure Servers:</strong> Our data is stored on secure servers with restricted access.</li>
+                <li><strong>Input Validation:</strong> Strict server-side input validation is performed to prevent common web vulnerabilities like XSS and SQL injection.</li>
+                <li><strong>Access Controls:</strong> Access to user data by our personnel is strictly limited and monitored.</li>
+            </ul>
+            <p class="text-gray-700 leading-relaxed mt-3">
+                While we strive to use commercially acceptable means to protect your Personal Data, no method of transmission over the Internet or method of electronic storage is 100% secure. Therefore, we cannot guarantee its absolute security.
+            </p>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">7. Your Data Protection Rights</h2>
+            <p class="text-gray-700 leading-relaxed">
+                Depending on your location, you may have the following data protection rights:
+            </p>
+            <ul class="list-disc list-inside text-gray-700 ml-4 mt-3 space-y-2">
+                <li><strong>The right to access:</strong> You have the right to request copies of your personal data.</li>
+                <li><strong>The right to rectification:</strong> You have the right to request that we correct any information you believe is inaccurate or complete information you believe is incomplete.</li>
+                <li><strong>The right to erasure:</strong> You have the right to request that we erase your personal data, under certain conditions.</li>
+                <li><strong>The right to restrict processing:</strong> You have the right to request that we restrict the processing of your personal data, under certain conditions.</li>
+                <li><strong>The right to object to processing:</strong> You have the right to object to our processing of your personal data, under certain conditions.</li>
+                <li><strong>The right to data portability:</strong> You have the right to request that we transfer the data that we have collected to another organization, or directly to you, under certain conditions.</li>
+            </ul>
+            <p class="text-gray-700 leading-relaxed mt-3">
+                If you make a request, we have one month to respond to you. To exercise any of these rights, please contact us using the information provided in the "Contact Us" section below.
+            </p>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">8. Children's Privacy</h2>
+            <p class="text-gray-700 leading-relaxed">
+                Our service is not intended for individuals under the age of 13. We do not knowingly collect personally identifiable information from anyone under the age of 13. If you are a parent or guardian and you are aware that your child has provided us with Personal Data, please contact us. If we become aware that we have collected Personal Data from children without verification of parental consent, we take steps to remove that information from our servers.
+            </p>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">9. Changes to This Privacy Policy</h2>
+            <p class="text-gray-700 leading-relaxed">
+                We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date at the top of this Privacy Policy.
+            </p>
+            <p class="text-gray-700 leading-relaxed mt-3">
+                You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.
+            </p>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">10. Contact Us</h2>
+            <p class="text-gray-700 leading-relaxed">
+                If you have any questions about this Privacy Policy, please contact us:
+            </p>
+            <ul class="list-disc list-inside text-gray-700 ml-4 mt-3 space-y-2">
+                <li>By email: <a href="mailto:privacy@qrcodegenius.com" class="text-blue-600 hover:underline">privacy@qrcodegenius.com</a></li>
+            </ul>
+        </section>
+    </div>
+    {% endblock %}
+</body>
+</html>

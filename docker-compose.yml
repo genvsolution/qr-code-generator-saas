@@ -1,0 +1,71 @@
+version: '3.8'
+
+# Docker Compose configuration for the 'QR Code Genius' application.
+# This file orchestrates the multi-container environment for local development and testing.
+# It sets up the Flask application and a PostgreSQL database.
+
+services:
+  # PostgreSQL Database Service
+  qr_genius_db:
+    image: postgres:13-alpine # Using a lightweight PostgreSQL image
+    container_name: qr_genius_postgres_db # Assign a memorable container name
+    environment:
+      # Database credentials and name for PostgreSQL.
+      # IMPORTANT: For production, these should be loaded from environment variables (e.g., via .env file)
+      # or Docker secrets, not hardcoded.
+      POSTGRES_DB: qrgenius_db
+      POSTGRES_USER: qrgenius_user
+      POSTGRES_PASSWORD: qrgenius_password_dev
+    volumes:
+      # Persist database data to a named volume on the host.
+      # This ensures data is not lost if the container is removed.
+      - qrgenius_db_data:/var/lib/postgresql/data
+    ports:
+      # Expose the PostgreSQL port to the host.
+      # This allows connecting to the database from outside Docker (e.g., using pgAdmin or DBeaver).
+      - "5432:5432"
+    restart: unless-stopped # Always restart the container unless it's explicitly stopped
+
+  # Flask Application Service
+  qr_genius_app:
+    build:
+      context: . # Build the Docker image from the current directory (where Dockerfile is located)
+      dockerfile: Dockerfile # Specify the Dockerfile name
+    container_name: qr_genius_flask_app # Assign a memorable container name
+    ports:
+      # Map the container's port 5000 (where Flask app runs) to the host's port 5000.
+      - "5000:5000"
+    volumes:
+      # Mount the current host directory into the container's /app directory.
+      # This enables live code reloading during development without rebuilding the image.
+      - .:/app
+      # Mount a dedicated volume for storing generated QR code images.
+      # This ensures QR codes persist on the host even if the container is recreated.
+      - ./qr_codes_storage:/app/qr_codes_storage
+    environment:
+      # Flask application environment variables.
+      FLASK_APP: app.py # Specifies the main Flask application file (e.g., app.py)
+      FLASK_ENV: development # Sets Flask to development mode for debugging and auto-reloading
+      # Database connection URL for Flask-SQLAlchemy or similar ORMs.
+      # Uses the service name 'qr_genius_db' as the hostname for inter-container communication.
+      DATABASE_URL: postgresql://qrgenius_user:qrgenius_password_dev@qr_genius_db:5432/qrgenius_db
+      # Secret key for Flask sessions and other security-sensitive operations.
+      # IMPORTANT: This is a development key. Generate a strong, unique key for production
+      # and load it securely (e.g., from an .env file or Docker secrets).
+      SECRET_KEY: this_is_a_development_secret_key_please_change_for_production_and_make_it_strong
+      # Path inside the container where generated QR codes will be stored.
+      QR_CODE_STORAGE_PATH: /app/qr_codes_storage
+    depends_on:
+      # Ensures the database service starts and is healthy before the application service starts.
+      - qr_genius_db
+    command: flask run --host=0.0.0.0 --port=5000 --debug # Run the Flask development server.
+                                                          # --host=0.0.0.0 makes it accessible from outside the container.
+                                                          # --debug enables auto-reloading and debugging features.
+    restart: unless-stopped # Always restart the container unless it's explicitly stopped
+
+# Define named volumes for data persistence
+volumes:
+  # Volume for PostgreSQL database data.
+  # Docker manages this volume, ensuring data is kept even if the 'qr_genius_db' container is removed.
+  qrgenius_db_data:
+    driver: local # Use the local driver for host-managed storage

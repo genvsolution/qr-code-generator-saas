@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - QR Code Genius{% end block %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+    <h1 class="text-4xl md:text-5xl font-extrabold text-center text-gray-900 mb-10">About QR Code Genius</h1>
+
+    <section class="mb-12 p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b pb-2">Who We Are</h2>
+        <p class="text-lg leading-relaxed text-gray-700">
+            QR Code Genius is a premier commercial SaaS platform dedicated to providing robust, secure, and aesthetically pleasing QR code solutions. Built with the powerful Flask framework, our application empowers individuals and businesses to effortlessly generate, download, manage, and eventually track QR codes for any URL. We pride ourselves on delivering a product that marries simplicity with modern design and powerful functionality, making it an ideal choice for both personal and professional use.
+        </p>
+    </section>
+
+    <section class="mb-12 p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b pb-2">Our Mission</h2>
+        <p class="text-lg leading-relaxed text-gray-700">
+            Our mission is to bridge the gap between the physical and digital worlds through reliable and intelligent QR code technology. We aim to simplify digital interactions, enhance marketing efforts, and streamline operations for our users. By focusing on security, intuitive design, and high performance, we strive to be the go-to platform for all your QR code generation and management needs, helping you connect with your audience more effectively.
+        </p>
+    </section>
+
+    <section class="mb-12 p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b pb-2">Why Choose QR Code Genius?</h2>
+        <ul class="list-disc list-inside text-lg leading-relaxed text-gray-700 space-y-3">
+            <li><strong>High-Quality Generation:</strong> Create crisp, scannable QR codes in various formats, including high-resolution PNG and scalable SVG, ensuring professional quality for any application.</li>
+            <li><strong>Secure Management Dashboard:</strong> Access a personalized dashboard to view, download, and manage all your generated QR codes securely. Keep track of your history and maintain full control.</li>
+            <li><strong>Robust Security:</strong> We prioritize your data. Our platform features secure user authentication, encrypted data storage, and strict input validation to protect your information.</li>
+            <li><strong>Intuitive User Experience:</strong> Enjoy a clean, modern, and responsive interface designed for ease of use across all devices, making QR code creation a breeze.</li>
+            <li><strong>Future-Ready Features:</strong> We are continuously innovating. Look forward to advanced features like detailed QR code analytics (scan counts, geo-location insights) and extensive customization options (colors, logos, frames) in upcoming releases.</li>
+            <li><strong>Commercial Grade Reliability:</strong> Engineered for stability and scalability, QR Code Genius is built to support individual users and growing businesses alike, offering a dependable solution you can trust.</li>
+        </ul>
+    </section>
+
+    <section class="text-center py-10 bg-gradient-to-r from-blue-600 to-purple-700 text-white rounded-lg shadow-xl">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to Unlock the Power of QR Codes?</h2>
+        <p class="text-xl leading-relaxed mb-8 max-w-2xl mx-auto">
+            Join the community of savvy users and businesses leveraging QR Code Genius to enhance their digital presence.
+            Start creating, managing, and tracking your QR codes today!
+        </p>
+        <a href="{{ url_for('main.generate_qr') }}" class="inline-block bg-white text-blue-700 hover:bg-gray-100 font-bold py-3 px-8 rounded-full text-xl transition duration-300 ease-in-out transform hover:scale-105 shadow-lg">
+            Generate Your First QR Code Now
+        </a>
+        <p class="mt-6 text-md text-blue-100">Already a member? <a href="{{ url_for('auth.login') }}" class="text-white hover:underline font-semibold">Log In</a></p>
+    </section>
+</div>
+{% end block %}

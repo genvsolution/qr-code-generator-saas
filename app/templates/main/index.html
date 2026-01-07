@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    QR Code Genius - Generate, Manage, Track Your QR Codes
+{% endblock %}
+
+{% block content %}
+    <main>
+        <!-- Flash Messages Section -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container mt-4">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Hero Section -->
+        <section class="hero-section bg-primary text-white text-center py-5">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-8 mx-auto">
+                        <h1 class="display-3 fw-bold mb-4">QR Code Genius: Generate, Manage, Track.</h1>
+                        <p class="lead mb-5">
+                            Your ultimate platform for secure, high-quality, and customizable QR codes.
+                            Perfect for individuals and businesses.
+                        </p>
+                        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                            <a href="#quick-generate" class="btn btn-light btn-lg px-4 me-sm-3">Generate QR Now</a>
+                            {% if not current_user.is_authenticated %}
+                                <a href="{{ url_for('auth.register') }}" class="btn btn-outline-light btn-lg px-4">Sign Up Free</a>
+                            {% else %}
+                                <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline-light btn-lg px-4">Go to Dashboard</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Generate QR Section -->
+        <section id="quick-generate" class="py-5 bg-light">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <h2 class="text-center mb-4 display-5 fw-bold">Generate Your QR Code Instantly</h2>
+                        <p class="text-center text-muted mb-5">
+                            Enter any URL below to create your high-quality QR code. It's fast, free, and secure!
+                        </p>
+                        <div class="card shadow-lg p-4 p-md-5">
+                            <form action="{{ url_for('main.generate_qr_post') }}" method="POST">
+                                {{ form.csrf_token }}
+                                <div class="mb-4">
+                                    <label for="{{ form.url.id }}" class="form-label fs-5">Target URL</label>
+                                    {{ form.url(class="form-control form-control-lg", placeholder="e.g., https://yourwebsite.com/product", required=true) }}
+                                    {% if form.url.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.url.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">
+                                        Ensure the URL is complete and correct (e.g., starts with http:// or https://).
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="{{ form.qr_format.id }}" class="form-label fs-5">Format</label>
+                                    {{ form.qr_format(class="form-select form-select-lg") }}
+                                    {% if form.qr_format.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.qr_format.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">Generate QR Code</button>
+                                </div>
+                            </form>
+                            {% if generated_qr_filename %}
+                                <div class="mt-5 text-center">
+                                    <h3 class="mb-3">Your QR Code is Ready!</h3>
+                                    <img src="{{ url_for('main.download_qr', filename=generated_qr_filename) }}"
+                                         alt="Generated QR Code" class="img-fluid border p-2 rounded" style="max-width: 250px;">
+                                    <p class="mt-3">
+                                        <a href="{{ url_for('main.download_qr', filename=generated_qr_filename) }}"
+                                           class="btn btn-success btn-lg" download>
+                                            <i class="bi bi-download me-2"></i> Download QR Code
+                                        </a>
+                                    </p>
+                                    {% if not current_user.is_authenticated %}
+                                        <p class="mt-3 text-muted">
+                                            <small>Sign up to save and manage your QR codes in your personal dashboard!</small>
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section py-5">
+            <div class="container">
+                <h2 class="text-center mb-5 display-5 fw-bold">Why Choose QR Code Genius?</h2>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <div class="col">
+                        <div class="feature-item text-center p-4 border rounded shadow-sm h-100">
+                            <i class="bi bi-qr-code-scan fs-1 text-primary mb-3"></i>
+                            <h3 class="h4 fw-bold mb-3">Instant & High-Quality Generation</h3>
+                            <p class="text-muted">
+                                Create crisp, high-resolution QR codes in seconds. Supports PNG (default) and SVG (vector) formats for all your needs.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="feature-item text-center p-4 border rounded shadow-sm h-100">
+                            <i class="bi bi-shield-lock fs-1 text-primary mb-3"></i>
+                            <h3 class="h4 fw-bold mb-3">Secure & Reliable</h3>
+                            <p class="text-muted">
+                                Your data is protected with robust validation, secure storage, and HTTPS encryption. Trust in our platform.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="feature-item text-center p-4 border rounded shadow-sm h-100">
+                            <i class="bi bi-speedometer2 fs-1 text-primary mb-3"></i>
+                            <h3 class="h4 fw-bold mb-3">User Dashboard & Management</h3>
+                            <p class="text-muted">
+                                Logged-in users get a personalized dashboard to view, download, and manage all their generated QR codes.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="feature-item text-center p-4 border rounded shadow-sm h-100">
+                            <i class="bi bi-graph-up fs-1 text-primary mb-3"></i>
+                            <h3 class="h4 fw-bold mb-3">Future: Analytics & Tracking</h3>
+                            <p class="text-muted">
+                                Coming soon: Gain insights into your QR code performance with scan counts, location data, and more.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="feature-item text-center p-4 border rounded shadow-sm h-100">
+                            <i class="bi bi-palette fs-1 text-primary mb-3"></i>
+                            <h3 class="h4 fw-bold mb-3">Future: Customization Options</h3>
+                            <p class="text-muted">
+                                Coming soon: Personalize your QR codes with custom colors, logos, and frames to match your brand.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="feature-item text-center p-4 border rounded shadow-sm h-100">
+                            <i class="bi bi-cloud-arrow-up fs-1 text-primary mb-3"></i>
+                            <h3 class="h4 fw-bold mb-3">Scalable & Robust</h3>
+                            <p class="text-muted">
+                                Built on a modern tech stack (Flask, PostgreSQL) for reliability and future scalability to meet growing demands.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Section -->
+        <section class="cta-section bg-primary text-white text-center py-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <h2 class="display-4 fw-bold mb-4">Ready to Elevate Your QR Code Experience?</h2>
+                        <p class="lead mb-5">
+                            Join thousands of users who trust QR Code Genius for their QR code needs.
+                            Sign up today and unlock powerful management features!
+                        </p>
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-light btn-lg px-5">Get Started Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}

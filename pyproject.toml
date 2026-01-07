@@ -1,0 +1,73 @@
+[project]
+name = "qr-code-genius"
+version = "0.1.0"
+description = "A commercial SaaS platform built with Flask, enabling users to securely generate, download, manage, and optionally track QR codes for various URLs."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "Proprietary" }
+keywords = ["flask", "qr-code", "saas", "web-application", "generation", "management"]
+authors = [
+    { name = "Your Name", email = "your.email@example.com" },
+]
+maintainers = [
+    { name = "Your Name", email = "your.email@example.com" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: Other/Proprietary License",
+    "Operating System :: OS Independent",
+    "Framework :: Flask",
+    "Topic :: Internet :: WWW/HTTP :: Site Management",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "Flask>=2.3.0,<4.0.0",
+    "Flask-SQLAlchemy>=3.0.0,<4.0.0",
+    "Flask-Bcrypt>=1.0.0,<2.0.0",
+    "Flask-Login>=0.6.0,<1.0.0",
+    "qrcode[pil]>=7.3.1,<8.0.0", # Includes Pillow for image generation
+    "psycopg2-binary>=2.9.0,<3.0.0", # PostgreSQL driver
+    "python-dotenv>=1.0.0,<2.0.0", # For environment variables
+    "gunicorn>=21.0.0,<22.0.0", # Production WSGI server
+    "email_validator>=2.0.0,<3.0.0", # Robust email validation
+    "Flask-WTF>=1.1.0,<2.0.0", # For form handling
+    "SQLAlchemy>=2.0.0,<3.0.0", # Explicitly list for version control
+    "Flask-Migrate>=4.0.0,<5.0.0", # For database migrations
+]
+
+[project.urls]
+Homepage = "https://www.qrcodegenius.com"
+Repository = "https://github.com/your-org/qr-code-genius"
+Issues = "https://github.com/your-org/qr-code-genius/issues"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["qrgenius"] # Assuming your main application package is named 'qrgenius'
+
+[tool.setuptools.package-data]
+qrgenius = ["templates/*.html", "static/*"] # Include static and template files for distribution
+
+# Optional: Configuration for development tools
+[tool.black]
+line-length = 120
+target-version = ['py39', 'py310', 'py311', 'py312']
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --strict-data --cov=qrgenius --cov-report=term-missing"
+testpaths = ["tests"]

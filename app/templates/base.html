@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {# Page title, can be overridden by child templates #}
+    <title>{% block title %}QR Code Genius{% endblock %}</title>
+    {# Favicon for the application #}
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    
+    {# Tailwind CSS CDN for rapid development and modern styling #}
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    {# Custom styles for flash messages and mobile menu toggle #}
+    <style>
+        .flash-message {
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+            border-radius: 0.25rem;
+        }
+        .flash-success {
+            color: #155724; /* Dark green */
+            background-color: #d4edda; /* Light green */
+            border-color: #c3e6cb; /* Medium green */
+        }
+        .flash-error {
+            color: #721c24; /* Dark red */
+            background-color: #f8d7da; /* Light red */
+            border-color: #f5c6cb; /* Medium red */
+        }
+        .flash-info {
+            color: #0c5460; /* Dark blue */
+            background-color: #d1ecf1; /* Light blue */
+            border-color: #bee5eb; /* Medium blue */
+        }
+        /* Mobile menu is hidden by default on larger screens (lg:hidden) and toggled by JS on small screens */
+        #mobile-menu {
+            display: none; /* Hidden by default for mobile */
+        }
+        #mobile-menu.open {
+            display: block; /* Shown when 'open' class is added by JS */
+        }
+        /* Ensure the body takes full height and content pushes footer down */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex-grow: 1; /* Main content area takes up available space */
+        }
+    </style>
+    
+    {# Block for page-specific CSS styles #}
+    {% block styles %}{% endblock %}
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <header class="bg-gradient-to-r from-blue-600 to-purple-700 text-white shadow-lg">
+        <nav class="container mx-auto px-4 py-4 flex items-center justify-between flex-wrap">
+            {# Application Logo and Name #}
+            <a href="{{ url_for('main.index') }}" class="flex items-center flex-shrink-0 text-white mr-6">
+                {# Generic QR Code SVG Icon #}
+                <svg class="fill-current h-8 w-8 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3 11a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2zM3 17a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 11a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2zM11 17a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2zM19 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM19 11a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 0
